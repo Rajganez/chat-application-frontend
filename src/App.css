@@ -1,0 +1,281 @@
+.form-logo-container {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.message-background {
+  /* background-image: url("./assets/messageBody.jpg"); */
+  background-color: #e3e3e3;
+  /* background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; */
+  /* opacity: 0.8; */
+}
+.contact-background {
+  background-color: #ffffff;
+}
+
+.forgot-password {
+  position: absolute;
+  right: 40px;
+  bottom: 120px;
+  font-size: 0.9rem;
+  color: #007bff;
+}
+
+.slackey-regular {
+  font-family: "Slackey", sans-serif;
+  font-weight: 400;
+  font-size: larger;
+  font-style: normal;
+}
+
+.playwrite-ar {
+  font-family: "Playwrite AR", cursive;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+.caveat {
+  font-family: "Caveat", cursive;
+  font-optical-sizing: auto;
+  /* font-size: larger; */
+  font-weight: 200;
+  font-style: normal;
+}
+.form-control {
+  text-align: center;
+  padding-left: 1%;
+  /* border-radius: 100px; */
+}
+.form-control::placeholder {
+  text-align: center;
+}
+
+.custom-md-width {
+  width: 45vw !important;
+}
+
+.custom-lg-width {
+  width: 30vw !important;
+}
+
+.custom-xl-width {
+  width: 20vw !important;
+}
+
+.custom-border-width {
+  border-width: 2px !important;
+}
+@media (min-width: 320px) {
+  .custom-sm-width {
+    width: 35vw !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .custom-md-width {
+    width: 35vw !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .custom-lg-width {
+    width: 30vw !important;
+  }
+  .custom-text-lg {
+    font-size: 2.25rem !important;
+  }
+}
+
+@media screen and (min-width: 319px) and (max-width: 426px) {
+  .hideOffcanvas {
+    display: none;
+  }
+  .showWebView {
+    display: flex;
+    overflow: hidden;
+  }
+  .contacts {
+    display: flex;
+    width: 100%;
+  }
+  .chatBody {
+    display: none;
+  }
+}
+@media screen and (min-width: 427px) {
+  .showWebView {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+  .contacts {
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+  }
+  .chatBody {
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+  }
+  .modal-custom {
+    width: 30%;
+  }
+  .start-50-above-425px {
+    left: 50% !important; /* or use start-50 class directly if it works in your case */
+  }
+}
+
+@media (min-width: 1200px) {
+  .custom-xl-width {
+    width: 20vw !important;
+  }
+  .bg-md-color {
+    background-color: black !important;
+  }
+  .custom-duration {
+    transition-duration: 1s !important;
+  }
+}
+
+.custom-text {
+  font-size: 1.75rem;
+}
+
+.custom-transition {
+  transition: all 0.3s;
+}
+
+.custom-tracking {
+  letter-spacing: 0.1em;
+}
+
+.custom-opacity {
+  opacity: 0.9;
+}
+
+.custom-padding {
+  padding-left: 2.5rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.custom-focus:focus {
+  border: none;
+  outline: none;
+  color: black;
+}
+
+.custom-duration {
+  transition: all 0.3s;
+}
+.custom-height {
+  height: 10vh;
+}
+
+.custom-border {
+  border-bottom-width: 1px;
+}
+
+.custom-width {
+  width: 100%;
+}
+
+.bottom-16 {
+  bottom: 4rem; /* 16 * 0.25rem (4rem) */
+}
+
+.hover-text-neutral-100:hover {
+  color: #f8f9fa; /* Equivalent to a light color */
+}
+
+.modal-custom {
+  position: fixed;
+  top: 200px;
+  left: 50%;
+  border-radius: 10px;
+  padding-top: 1rem;
+  padding-left: 1.5rem;
+  transform: translateX(-50%);
+  z-index: 1050;
+  display: block;
+  /* width: 70%; */
+}
+
+.custom-z-index {
+  z-index: 1000;
+}
+.modal-backdrop {
+  display: none;
+}
+
+.scrollbar-hidden {
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+.font-size-timestamp {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.results-container {
+  max-height: 50vh; /* Adjust the height as needed */
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink-animation {
+  animation: blink 1s infinite;
+}
+
+.loader-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Full viewport height */
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #000;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
