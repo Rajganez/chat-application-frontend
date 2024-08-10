@@ -4,7 +4,7 @@ HiBuddy is a real-time chat application built with React and Vite.
 
 It features a modern user interface, emoji support, and real-time messaging capabilities using Socket.io.
 
-Video can be sent but because of free instances this may cause time out from the server Images, Documents and Messages are stored in the database and retrieved perfectly
+In local videos are perfectly transmitted, but because of free instances this may cause time out from the server, Images, Documents and Messages are stored in the database and retrieved perfectly
 
 Different DB storage done in MongoDB for Direct chat messages and Group chat messages
 
