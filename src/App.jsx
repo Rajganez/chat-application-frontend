@@ -11,7 +11,6 @@ const ChatBody = lazy(() => import("./pages/chats/ChatBody"));
 const Contacts = lazy(() => import("./components/Contacts"));
 const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
 import WebDisplay from "./pages/groupchats/WebDisplay";
-import RunSimple from "./pages/users/RunSimple";
 import Loader from "./components/Loader";
 
 function App() {
@@ -32,7 +31,6 @@ function App() {
               <Route path="/contacts/:id" element={<Contacts />} />
               <Route path="/groupchat/:id" element={<GroupChatBody />} />
               <Route path="/group" element={<WebDisplay />} />
-              <Route path="/run" element={<RunSimple />} />
             </Route>
             <Route path="*" element={<h1>Page not Found</h1>} />
           </Routes>
