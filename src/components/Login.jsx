@@ -45,14 +45,16 @@ const Login = () => {
         dispatch(setUserImage(imageStr || null));
         alert("Buddy Logged in successfully");
         navigate(`/buddy/profile/${userID}`);
-      }else if(status === 401) {
+      } else if (status === 401) {
         alert("Incorrect Credentials.");
       }
     } catch (error) {
-      if(error.status === 401) {
-        alert("Invalid Credentials.")
+      if (error.response && error.response.status === 401) {
+        alert("Invalid Credentials.");
+      } else {
+        console.error("Login failed:", error.message);
+        alert("An error occurred during login.");
       }
-      console.error("Login failed:", error.message);
     }
   };
   //Form Handling
