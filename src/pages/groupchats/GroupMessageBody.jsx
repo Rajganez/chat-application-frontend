@@ -145,7 +145,7 @@ const GroupMessageBody = () => {
     ) : (
       <div key={key}>
         {/* Nick name is set to the message sender in the group */}
-        <div className="text-secondary d-flex justify-content-start fw-lighter fs-6">
+        <div className="text-secondary d-flex justify-content-start fw-lighter group-notification-font">
           {nick}
         </div>
         <div className="d-flex justify-content-start mb-2">

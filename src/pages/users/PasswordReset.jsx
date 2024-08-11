@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { RESET_ROUTE } from "../../api/constants.js";
 import { clientAPI } from "../../api/axios-api.js";
+import background from "../../assets/sidebarimage.jpg";
 
 const PasswordReset = () => {
   //With params password reset link is created
@@ -61,7 +62,7 @@ const PasswordReset = () => {
             <div className="row g-0">
               <div className="col-md-6">
                 <img
-                  src="src\assets\sidebarimage.jpg"
+                  src={background}
                   className="img-fluid float-start"
                   alt="Sample image"
                   style={{ height: "100%" }}

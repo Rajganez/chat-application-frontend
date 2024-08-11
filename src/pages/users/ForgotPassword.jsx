@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { clientAPI } from "../../api/axios-api.js";
 import { FORGOT_ROUTE } from "../../api/constants.js";
+import background from "../../assets/sidebarimage.jpg";
 
 const ForgotPassword = () => {
   //Intial form validation
@@ -56,7 +57,7 @@ const ForgotPassword = () => {
             <div className="row g-0">
               <div className="col-md-6">
                 <img
-                  src="src\assets\sidebarimage.jpg"
+                  src={background}
                   className="img-fluid float-start"
                   alt="Sample image"
                   style={{ height: "100%" }}

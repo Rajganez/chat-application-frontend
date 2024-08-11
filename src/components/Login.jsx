@@ -45,6 +45,8 @@ const Login = () => {
         dispatch(setUserImage(imageStr || null));
         alert("Buddy Logged in successfully");
         navigate(`/buddy/profile/${userID}`);
+      }else if(status === 403 || status === 401) {
+        alert("Incorrect Credentials.");
       }
     } catch (error) {
       console.error("Login failed:", error.message);
@@ -135,7 +137,7 @@ const Login = () => {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="btn btn-secondary btn-lg mt-3 rounded-5"
+            className="btn btn-primary bg-gradient p-2 text-white bg-opacity-50 btn-lg mt-3 rounded-5"
           >
             Login
           </button>

@@ -17,7 +17,6 @@ const VerifyBuddy = () => {
         const response = await clientAPI.get(`${VERIFY_ROUTE}/${id}`, {
           withCredentials: true,
         });
-        console.log(response);
         if (response.status === 200) {
           setStatus("Your email has been successfully verified!");
           dispatch(setVerified(response.data.emailVerifed));
@@ -46,7 +45,7 @@ const VerifyBuddy = () => {
                   <h2 className="d-flex justify-content-center">
                     <div className="slackey-regular"> Hi! Buddy</div>
                   </h2>
-                  <div className="playwrite-ar text-center">{status}</div>
+                  <div className="playwrite-ar text-center m-2 p-2">{status}</div>
                 </div>
               </div>
             </div>

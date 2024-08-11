@@ -45,8 +45,8 @@ const GroupChatHeader = () => {
     {/* Buddy is not the member of the group then Empty container is shown */}
       {!groupInfo.groupAuth && <WelcomeComponent />}
       <div
-        className="d-flex align-items-center bg-secondary border-bottom border-white 
-        custom-height custom-border"
+        className="d-flex align-items-center bg-light rounded-top border border-dark 
+        custom-height custom-border p-2"
       >
         <button className="flex btn d-md-none" onClick={handleToggleOffcanvas}>
           <ArrowBackIcon className="text-dark" sx={{ width: 30, height: 30 }} />

@@ -123,7 +123,7 @@ const Register = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="btn btn-secondary btn-lg mt-5 rounded-5"
+              className="btn btn-primary bg-gradient p-2 text-white bg-opacity-50 btn-lg mt-5 rounded-5"
             >
               Sign Up
             </button>
