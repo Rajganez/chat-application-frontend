@@ -9,6 +9,7 @@ import { IoMdExit } from "react-icons/io";
 import { clientAPI } from "../../api/axios-api.js";
 import { EXIT_GROUP } from "../../api/constants.js";
 import { useSelector } from "react-redux";
+import {GroupIcon} from "../../assets/groupIcon.png";
 
 const GroupChatHeader = () => {
   // Redux state variable
@@ -51,8 +52,8 @@ const GroupChatHeader = () => {
         <button className="flex btn d-md-none" onClick={handleToggleOffcanvas}>
           <ArrowBackIcon className="text-dark" sx={{ width: 30, height: 30 }} />
         </button>
-        <Avatar className="ms-2" src="" />
-        <span className="ms-2 text-white">{groupInfo.groupName}</span>
+        <Avatar className="ms-2" src={GroupIcon} />
+        <span className="ms-2 text-dark">{groupInfo.groupName}</span>
         <div className="d-flex ms-5 align-items-end">
           <div
             className="flex ms-4 align-items-end fs-5 text-danger"

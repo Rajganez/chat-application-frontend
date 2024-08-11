@@ -13,6 +13,8 @@ import {
   setGroupName,
   setScreen,
 } from "../../redux/reducerSlice.js";
+import { GroupIcon } from "../../assets/groupIcon.png";
+import { Avatar } from "@mui/material";
 
 const Channels = () => {
   //Redux State variable
@@ -111,7 +113,8 @@ const Channels = () => {
             <h6 className=" text-dark"> Groups</h6>
           </div>
           {groupChats.map((group) => (
-            <div key={group.groupId}>
+            <div key={group.groupId} className="d-flex align-items-center mb-2">
+              <Avatar className="ms-2" src={GroupIcon} />
               <div
                 className="ms-2 mt-1 text-secondary"
                 type="button"
