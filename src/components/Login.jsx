@@ -45,10 +45,13 @@ const Login = () => {
         dispatch(setUserImage(imageStr || null));
         alert("Buddy Logged in successfully");
         navigate(`/buddy/profile/${userID}`);
-      }else if(status === 403 || status === 401) {
+      }else if(status === 401) {
         alert("Incorrect Credentials.");
       }
     } catch (error) {
+      if(error.status === 401) {
+        alert("Invalid Credentials.")
+      }
       console.error("Login failed:", error.message);
     }
   };
