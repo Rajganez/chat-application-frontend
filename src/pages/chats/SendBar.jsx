@@ -90,7 +90,7 @@ const SendBar = () => {
 
   return (
     <>
-      <div className="custom-height position-fixed bg-light rounded-4 text-light d-flex justify-content-center align-item-center ms-2 mb-1 g-5">
+      <div className="custom-height bg-light rounded-4 text-light d-flex justify-content-center align-item-center ms-2 mb-1 g-5">
         <div className="d-flex flex-grow-1 bg-light rounded align-items-center">
           <input
             type="text"
