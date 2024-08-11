@@ -145,10 +145,10 @@ const GroupMessageBody = () => {
     ) : (
       <div key={key}>
         {/* Nick name is set to the message sender in the group */}
-        <div className="text-secondary d-flex justify-content-start fw-lighter group-notification-font">
-          {nick}
-        </div>
         <div className="d-flex justify-content-start mb-2">
+        <div className="text-info d-flex justify-content-start fw-lighter group-notification-font">
+          ~<span role="img" aria-label="smiling face with horns">😈</span>{nick}
+        </div>
           <div
             className="d-inline-block text-dark text-start bg-light border
             rounded-end border border-secondary text-break p-2 mt-1"
