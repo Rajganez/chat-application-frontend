@@ -13,7 +13,7 @@ import {
   setGroupName,
   setScreen,
 } from "../../redux/reducerSlice.js";
-import { GroupIcon } from "../../assets/groupIcon.png";
+import GroupIcon from "../../assets/groupIcon.png";
 import { Avatar } from "@mui/material";
 
 const Channels = () => {

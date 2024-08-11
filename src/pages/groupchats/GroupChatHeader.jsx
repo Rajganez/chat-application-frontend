@@ -9,7 +9,7 @@ import { IoMdExit } from "react-icons/io";
 import { clientAPI } from "../../api/axios-api.js";
 import { EXIT_GROUP } from "../../api/constants.js";
 import { useSelector } from "react-redux";
-import {GroupIcon} from "../../assets/groupIcon.png";
+import GroupIcon from "../../assets/groupIcon.png";
 
 const GroupChatHeader = () => {
   // Redux state variable
@@ -31,10 +31,9 @@ const GroupChatHeader = () => {
         { id: groupInfo.buddyId },
         { withCredentials: true }
       );
-      if(response.status === 200){
-        alert("Exited successfully. You No longer can sent messages")
+      if (response.status === 200) {
+        alert("Exited successfully. You No longer can sent messages");
       }
-
     } catch (error) {
       console.log("Error Exiting group or Not in Group");
       alert("Failed to exit group.");
@@ -43,7 +42,7 @@ const GroupChatHeader = () => {
 
   return (
     <>
-    {/* Buddy is not the member of the group then Empty container is shown */}
+      {/* Buddy is not the member of the group then Empty container is shown */}
       {!groupInfo.groupAuth && <WelcomeComponent />}
       <div
         className="d-flex align-items-center bg-light rounded-top border border-dark 
