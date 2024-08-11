@@ -28,7 +28,7 @@ const ChatHeader = () => {
           <WelcomeComponent />
         )}
       <div
-        className="d-flex position-fixed align-items-center bg-light rounded-top border border-dark 
+        className="d-flex align-items-center bg-light rounded-top border border-dark 
         custom-height custom-border p-2"
       >
         <button className="flex btn d-md-none" onClick={handleToggleOffcanvas}>
