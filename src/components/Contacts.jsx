@@ -145,29 +145,29 @@ const Contacts = () => {
 
   //Show Notification when user log's in
   useEffect(() => {
-    try {
-      const newNotification = async () => {
+    const newNotification = async () => {
+      try {
         const response = await clientAPI.post(
           NEW_NOTIFICATION,
-          {
-            id: buddyDetails.buddyId,
-          },
+          { id: buddyDetails.buddyId },
           { withCredentials: true }
         );
         if (response.status === 201) {
-          console.log(response);
           setShowNewMsgModal(true);
           setNewMsg(response.data.sender);
         }
-      };
-      newNotification();
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        console.log("User not found");
-        setShowNewMsgModal(false);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          console.log("User not found");
+          setShowNewMsgModal(false);
+        } else {
+          console.error("An error occurred:", error);
+        }
       }
-    }
-  }, [buddyDetails.buddyId]);
+    };
+    newNotification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //Logout function and cleared all the persist values from the Redux store
   const handleLogout = async () => {
