@@ -1,8 +1,8 @@
 import { createContext, useState, useMemo, useEffect } from "react";
 import CustomModal from "../components/CustomModal";
 import PropTypes from "prop-types";
-import { clientAPI } from "../api/axios-api";
-import { LOGOUT_ROUTE } from "../api/constants";
+import { clientAPI } from "../api/axios-api.js";
+import { LOGOUT_ROUTE } from "../api/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loggedBuddy,
