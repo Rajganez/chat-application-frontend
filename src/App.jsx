@@ -12,6 +12,7 @@ const Contacts = lazy(() => import("./components/Contacts"));
 const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
 import WebDisplay from "./pages/groupchats/WebDisplay";
 import Loader from "./components/Loader";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -23,14 +24,57 @@ function App() {
               <Route path="/" element={<Welcome />} />
               <Route path="/buddy" element={<Welcome />} />
               <Route path="/buddy/buddyverify/:id" element={<VerifyBuddy />} />
-              <Route path="/buddy/profile/:userId" element={<Profile />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               <Route path="/resetpassword/:id" element={<PasswordReset />} />
-              <Route path="/chat/:userid" element={<Chat />} />
-              <Route path="/chat/fellowbuddy/:id" element={<ChatBody />} />
-              <Route path="/contacts/:id" element={<Contacts />} />
-              <Route path="/groupchat/:id" element={<GroupChatBody />} />
-              <Route path="/group" element={<WebDisplay />} />
+
+              <Route
+                path="/buddy/profile/:userId"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat/:userid"
+                element={
+                  <ProtectedRoute>
+                    <Chat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat/fellowbuddy/:id"
+                element={
+                  <ProtectedRoute>
+                    <ChatBody />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/contacts/:id"
+                element={
+                  <ProtectedRoute>
+                    <Contacts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/groupchat/:id"
+                element={
+                  <ProtectedRoute>
+                    <GroupChatBody />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/group"
+                element={
+                  <ProtectedRoute>
+                    <WebDisplay />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
             <Route path="*" element={<h1>Page not Found</h1>} />
           </Routes>
