@@ -7,17 +7,21 @@ import store from "./redux/store.js";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { SocketProvider } from "./context/SocketContext.jsx";
+import { PromptProvider } from "./context/PromptProvider.jsx";
+import Loader from "./components/Loader.jsx";
 
 const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<h1>Loading...</h1>}>
-        <SocketProvider>
+  <Provider store={store}>
+    <PersistGate persistor={persistor} loading={<Loader />}>
+      <SocketProvider>
+        <PromptProvider>
           <App />
-        </SocketProvider>
-      </PersistGate>
-    </Provider>
+        </PromptProvider>
+      </SocketProvider>
+    </PersistGate>
+  </Provider>
   // </React.StrictMode>
 );

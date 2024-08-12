@@ -200,7 +200,7 @@ const Contacts = () => {
         dispatch(setNotification([]));
         dispatch(addMessage([]));
         dispatch(showMsg(false));
-        sessionStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("isAuthenticated", "false");
         sessionStorage.setItem("isFirstLoad", "false");
         alert("Logged out successfully");
         navigate("/buddy");

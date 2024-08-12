@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RESET_ROUTE } from "../../api/constants.js";
 import { clientAPI } from "../../api/axios-api.js";
 import background from "../../assets/sidebarimage.jpg";
@@ -7,6 +7,8 @@ import background from "../../assets/sidebarimage.jpg";
 const PasswordReset = () => {
   //With params password reset link is created
   const { id } = useParams();
+  //Navigate to Login page after password reset done successfully
+  const navigate = useNavigate();
   //Intial formdata
   const intialForm = {
     newPassword: "",
@@ -34,12 +36,21 @@ const PasswordReset = () => {
         alert(
           "Password reset successfully! Please login with your new password."
         );
+        setTimeout(() => {
+          navigate("/buddy");
+        }, 1000);
       } else if (response.status === 401) {
         alert("Token Expired! Please try resetting your password again.");
+        setTimeout(() => {
+          navigate("/forgotpassword");
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      alert("Something went wrong, Try Resetting again.");
+      setTimeout(() => {
+        navigate("/forgotpassword");
+      }, 1000);
     }
   };
   //After the validations submitted and the API is called
