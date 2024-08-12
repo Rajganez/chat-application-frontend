@@ -21,7 +21,7 @@ import {
   showMsg,
 } from "../redux/reducerSlice";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, unstable_useBlocker as useBlocker } from "react-router-dom";
 
 const PromptContext = createContext();
 
@@ -34,7 +34,6 @@ export const PromptProvider = ({ children }) => {
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   // Memoize routesToPrompt to prevent unnecessary effect re-runs
   const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
@@ -88,30 +87,30 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const blocker = useBlocker((tx) => {
+    if (isBlocking && routesToPrompt.includes(tx.location.pathname)) {
+      activatePrompt("Are you sure you want to leave this page?");
+      setNextLocation(tx.location);
+      return false; // Prevent navigation
+    }
+    return true; // Allow navigation
+  });
+
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (isBlocking) {
         e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-
-    const handleRouteChange = (e) => {
-      if (isBlocking && routesToPrompt.includes(location.pathname)) {
-        e.preventDefault();
-        activatePrompt("Are you sure you want to leave this page?");
-        setNextLocation(e.detail.location);
+        e.returnValue = ""; // Prompt user with a native browser alert
       }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("navigate", handleRouteChange);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("navigate", handleRouteChange);
     };
-  }, [isBlocking, location.pathname, routesToPrompt]);
+  }, [isBlocking]);
 
   useEffect(() => {
     if (nextLocation && !showModal) {
