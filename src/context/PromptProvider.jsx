@@ -21,13 +21,14 @@ import {
   showMsg,
 } from "../redux/reducerSlice";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Prompt } from "react-router-dom";
 
 const PromptContext = createContext();
 
 export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [isBlocking, setIsBlocking] = useState(false);
 
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
@@ -77,19 +78,25 @@ export const PromptProvider = ({ children }) => {
   const activatePrompt = (message) => {
     setModalMessage(message);
     setShowModal(true);
+    setIsBlocking(true);
   };
 
   // Hook to listen to route changes
   useEffect(() => {
-    const unblock = navigate.block((nextLocation) => {
+    const handleRouteChange = (nextLocation) => {
       if (routesToPrompt.includes(nextLocation.pathname)) {
         activatePrompt("Are you sure you want to leave this page?");
         return false; // Prevent navigation
       }
       return true; // Allow navigation
+    };
+
+    // Listen for location changes
+    const unblock = navigate.listen((location) => {
+      handleRouteChange(location);
     });
 
-    // Cleanup the blocker on unmount
+    // Cleanup listener
     return () => {
       unblock();
     };
@@ -103,9 +110,18 @@ export const PromptProvider = ({ children }) => {
         activatePrompt,
         handleConfirm,
         handleCancel,
+        isBlocking,
       }}
     >
       {children}
+      <Prompt
+        when={isBlocking}
+        message={(location) =>
+          routesToPrompt.includes(location.pathname)
+            ? "Are you sure you want to leave this page?"
+            : true
+        }
+      />
       {showModal && (
         <CustomModal
           message={modalMessage}
