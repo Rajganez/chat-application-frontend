@@ -81,27 +81,19 @@ export const PromptProvider = ({ children }) => {
 
   // Hook to listen to route changes
   useEffect(() => {
-    const handleRouteChange = (nextLocation) => {
+    const unblock = navigate.block((nextLocation) => {
       if (routesToPrompt.includes(nextLocation.pathname)) {
         activatePrompt("Are you sure you want to leave this page?");
         return false; // Prevent navigation
       }
       return true; // Allow navigation
-    };
+    });
 
-    // Check route change on location change
-    const handleLocationChange = () => {
-      handleRouteChange(location);
-    };
-
-    // Listen for location changes
-    window.addEventListener("popstate", handleLocationChange);
-
-    // Cleanup listener
+    // Cleanup the blocker on unmount
     return () => {
-      window.removeEventListener("popstate", handleLocationChange);
+      unblock();
     };
-  }, [location, routesToPrompt]);
+  }, [navigate, location, routesToPrompt]);
 
   return (
     <PromptContext.Provider

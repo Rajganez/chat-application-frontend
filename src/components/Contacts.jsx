@@ -146,7 +146,7 @@ const Contacts = () => {
   //Show Notification when user log's in
   useEffect(() => {
     const isFirstLoad = sessionStorage.getItem("isFirstLoad");
-    if (!isFirstLoad) {
+    if (!isFirstLoad || isFirstLoad === false) {
       const newNotification = async () => {
         try {
           const response = await clientAPI.post(
