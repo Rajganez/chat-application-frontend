@@ -21,7 +21,8 @@ import {
   showMsg,
 } from "../redux/reducerSlice";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, unstable_useBlocker as useBlocker } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import usePrompt from "../hooks/usePrompt.js";
 
 const PromptContext = createContext();
 
@@ -87,15 +88,10 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const blocker = useBlocker((tx) => {
-    if (isBlocking && routesToPrompt.includes(tx.location.pathname)) {
-      activatePrompt("Are you sure you want to leave this page?");
-      setNextLocation(tx.location);
-      return false; // Prevent navigation
-    }
-    return true; // Allow navigation
-  });
+  usePrompt(
+    "Are you sure you want to leave this page?",
+    isBlocking && routesToPrompt.includes(nextLocation?.pathname)
+  );
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
