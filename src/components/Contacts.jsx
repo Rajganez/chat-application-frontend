@@ -168,7 +168,9 @@ const Contacts = () => {
         }
       };
       newNotification();
-      sessionStorage.setItem("isFirstLoad", "true");
+      setTimeout(() => {
+        sessionStorage.setItem("isFirstLoad", "true");
+      }, 1000);
     }
   }, [buddyDetails.buddyId]);
 
