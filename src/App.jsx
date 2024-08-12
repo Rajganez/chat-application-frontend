@@ -13,71 +13,77 @@ const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
 import WebDisplay from "./pages/groupchats/WebDisplay";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { PromptProvider } from "./context/PromptProvider.jsx";
 
 function App() {
   return (
     <>
       <Suspense fallback={<Loader />}>
         <BrowserRouter>
-          <Routes>
-            <Route>
-              <Route path="/" element={<Welcome />} />
-              <Route path="/buddy" element={<Welcome />} />
-              <Route path="/buddy/buddyverify/:id" element={<VerifyBuddy />} />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
-              <Route path="/resetpassword/:id" element={<PasswordReset />} />
+          <PromptProvider>
+            <Routes>
+              <Route>
+                <Route path="/" element={<Welcome />} />
+                <Route path="/buddy" element={<Welcome />} />
+                <Route
+                  path="/buddy/buddyverify/:id"
+                  element={<VerifyBuddy />}
+                />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+                <Route path="/resetpassword/:id" element={<PasswordReset />} />
 
-              <Route
-                path="/buddy/profile/:userId"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/chat/:userid"
-                element={
-                  <ProtectedRoute>
-                    <Chat />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/chat/fellowbuddy/:id"
-                element={
-                  <ProtectedRoute>
-                    <ChatBody />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/contacts/:id"
-                element={
-                  <ProtectedRoute>
-                    <Contacts />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/groupchat/:id"
-                element={
-                  <ProtectedRoute>
-                    <GroupChatBody />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/group"
-                element={
-                  <ProtectedRoute>
-                    <WebDisplay />
-                  </ProtectedRoute>
-                }
-              />
-            </Route>
-            <Route path="*" element={<h1>Page not Found</h1>} />
-          </Routes>
+                <Route
+                  path="/buddy/profile/:userId"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/chat/:userid"
+                  element={
+                    <ProtectedRoute>
+                      <Chat />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/chat/fellowbuddy/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ChatBody />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/contacts/:id"
+                  element={
+                    <ProtectedRoute>
+                      <Contacts />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/groupchat/:id"
+                  element={
+                    <ProtectedRoute>
+                      <GroupChatBody />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/group"
+                  element={
+                    <ProtectedRoute>
+                      <WebDisplay />
+                    </ProtectedRoute>
+                  }
+                />
+              </Route>
+              <Route path="*" element={<h1>Page not Found</h1>} />
+            </Routes>
+          </PromptProvider>
         </BrowserRouter>
       </Suspense>
     </>

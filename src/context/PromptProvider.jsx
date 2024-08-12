@@ -90,15 +90,18 @@ export const PromptProvider = ({ children }) => {
     };
 
     // Check route change on location change
-    const unlisten = navigate.listen((location) => {
+    const handleLocationChange = () => {
       handleRouteChange(location);
-    });
+    };
+
+    // Listen for location changes
+    window.addEventListener("popstate", handleLocationChange);
 
     // Cleanup listener
     return () => {
-      unlisten();
+      window.removeEventListener("popstate", handleLocationChange);
     };
-  }, [navigate, location, routesToPrompt]);
+  }, [location, routesToPrompt]);
 
   return (
     <PromptContext.Provider
