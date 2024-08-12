@@ -167,7 +167,7 @@ const Contacts = () => {
         setShowNewMsgModal(false);
       }
     }
-  }, []);
+  }, [buddyDetails.buddyId]);
 
   //Logout function and cleared all the persist values from the Redux store
   const handleLogout = async () => {
@@ -298,8 +298,8 @@ const Contacts = () => {
               <div className="modal-content">
                 <div className="modal-header d-flex mx-4 justify-content-between">
                   <h1 className="modal-title fs-5" id="exampleModalLabel">
-                    <GoMail className="fs-4" />&nbsp; New Messages when you are
-                    Offline
+                    <GoMail className="fs-4" />
+                    &nbsp; New Messages when you are Offline
                   </h1>
                   <button
                     type="button"
@@ -308,7 +308,10 @@ const Contacts = () => {
                     onClick={handleCloseModal}
                   ></button>
                 </div>
-                <div className="modal-body mt-2">
+                <div className="text-success">
+                  <hr />
+                </div>
+                <div className="modal-body mt-2 results-container">
                   {newMsg.map((val) => {
                     return (
                       <div key={val._id} className="d-flex align-items-center">
@@ -318,7 +321,7 @@ const Contacts = () => {
                           className="ms-2"
                         />
                         <span
-                          className="fs-5 text-primary"
+                          className="fs-5 text-ptimary ms-2"
                           type="button"
                           onClick={() => handleSearchClick(val._id)}
                         >
