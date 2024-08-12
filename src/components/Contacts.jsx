@@ -145,29 +145,32 @@ const Contacts = () => {
 
   //Show Notification when user log's in
   useEffect(() => {
-    const newNotification = async () => {
-      try {
-        const response = await clientAPI.post(
-          NEW_NOTIFICATION,
-          { id: buddyDetails.buddyId },
-          { withCredentials: true }
-        );
-        if (response.status === 201) {
-          setShowNewMsgModal(true);
-          setNewMsg(response.data.sender);
+    const isFirstLoad = sessionStorage.getItem("isFirstLoad");
+    if (!isFirstLoad) {
+      const newNotification = async () => {
+        try {
+          const response = await clientAPI.post(
+            NEW_NOTIFICATION,
+            { id: buddyDetails.buddyId },
+            { withCredentials: true }
+          );
+          if (response.status === 201) {
+            setShowNewMsgModal(true);
+            setNewMsg(response.data.sender);
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            console.log("User not found");
+            setShowNewMsgModal(false);
+          } else {
+            console.error("An error occurred:", error);
+          }
         }
-      } catch (error) {
-        if (error.response && error.response.status === 404) {
-          console.log("User not found");
-          setShowNewMsgModal(false);
-        } else {
-          console.error("An error occurred:", error);
-        }
-      }
-    };
-    newNotification();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      };
+      newNotification();
+      sessionStorage.setItem("isFirstLoad", "true");
+    }
+  }, [buddyDetails.buddyId]);
 
   //Logout function and cleared all the persist values from the Redux store
   const handleLogout = async () => {
