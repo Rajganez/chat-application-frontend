@@ -24,6 +24,7 @@ export const UPLOAD_FILE = `${CHAT_ROUTE}/uploadfile`;
 // export const GET_CHAT_CONTACT = `${CHAT_ROUTE}/getchatcontacts`;
 export const GET_NOTIFIED = `${CHAT_ROUTE}/getbuddies`;
 export const UPLOAD_MEDIA = `${CHAT_ROUTE}/uploadmedia`;
+export const NEW_NOTIFICATION = `${CHAT_ROUTE}/notifymsg`;
 
 //API Routes to access the Group chat data 
 export const GROUP_ROUTE = "/groups";

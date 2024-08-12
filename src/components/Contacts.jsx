@@ -5,7 +5,12 @@ import { CiEdit } from "react-icons/ci";
 import { BiLogOut } from "react-icons/bi";
 import { TbUserSearch } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { FELLOW_BUDDY, LOGOUT_ROUTE, SEARCH_BUDDY } from "../api/constants.js";
+import {
+  FELLOW_BUDDY,
+  LOGOUT_ROUTE,
+  NEW_NOTIFICATION,
+  SEARCH_BUDDY,
+} from "../api/constants.js";
 import {
   loggedBuddy,
   setFellowId,
@@ -26,6 +31,7 @@ import { clientAPI } from "../api/axios-api.js";
 import Channels from "../pages/groupchats/Channels.jsx";
 import { addMessage } from "../redux/socketSlice.js";
 import { useSocket } from "../context/SocketContext.jsx";
+import { GoMail } from "react-icons/go";
 
 const Contacts = () => {
   //Redux state object to get the actions
@@ -40,6 +46,10 @@ const Contacts = () => {
   const [fellowContacts, setFellowContacts] = useState([]);
   //State to hold the search results for getting notification messages
   const [searchResults, setSearchResults] = useState(new Set());
+  //State to show the modal for new message when user log's in
+  const [showNewMsgModal, setShowNewMsgModal] = useState(false);
+  //State to render the new message in log in
+  const [newMsg, setNewMsg] = useState([]);
 
   // Modal Function
   const handleShowModal = () => setShowModal(true);
@@ -129,12 +139,42 @@ const Contacts = () => {
     }
   }, [dispatch, socket]);
 
+  //Show Notification when user log's in
+  useEffect(() => {
+    try {
+      const newNotification = async () => {
+        const response = await clientAPI.post(
+          NEW_NOTIFICATION,
+          {
+            id: buddyDetails.buddyId,
+          },
+          { withCredentials: true }
+        );
+        if (response.status === 201) {
+          console.log(response);
+          setShowNewMsgModal(true);
+          setNewMsg(response.data.sender);
+        }
+      };
+      newNotification();
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        console.log("User not found");
+        setShowNewMsgModal(false);
+      }
+    }
+  }, []);
+
   //Logout function and cleared all the persist values from the Redux store
   const handleLogout = async () => {
     try {
-      const response = await clientAPI.post(LOGOUT_ROUTE, {
-        withCredentials: true,
-      });
+      const response = await clientAPI.post(
+        LOGOUT_ROUTE,
+        { id: buddyDetails.buddyId },
+        {
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         dispatch(setNick(null));
         dispatch(setFellowNick(null));
@@ -244,6 +284,43 @@ const Contacts = () => {
         </div>
         {/* Default Groups Component */}
         <Channels />
+        {showNewMsgModal && (
+          <div
+            className="modal-custom show bg-light text-dark border"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header d-flex mx-4 justify-content-between">
+                  <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  <GoMail className="fs-4"/> New Messages when you are Offline
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close ms-5"
+                    aria-label="Close"
+                    onClick={handleCloseModal}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  {newMsg.map((val) => {
+                    return (
+                      <div key={val.id} className="d-flex align-items-center">
+                        <Avatar
+                          alt={val.nickname}
+                          src={`${val.image}`}
+                          className="ms-2"
+                        />
+                        <span className="fs-5 text-primary">{val.nickname}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Condition to show the modal on searching the buddies in the Application */}
         {showModal && (
           <div
