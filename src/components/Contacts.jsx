@@ -119,9 +119,11 @@ const Contacts = () => {
   useEffect(() => {
     if (socket) {
       socket.on("notification", (notification) => {
-        setSearchResults((prevSearchResults) =>
-          new Set(prevSearchResults).add(notification.sender)
-        );
+        setSearchResults((prevSearchResults) => {
+          const newSearchResults = new Set(prevSearchResults);
+          newSearchResults.add(notification.sender);
+          return newSearchResults;
+        });
         dispatch(showMsg(false));
       });
     }
