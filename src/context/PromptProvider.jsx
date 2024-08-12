@@ -21,13 +21,14 @@ import {
   showMsg,
 } from "../redux/reducerSlice";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, useLocation, Prompt } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PromptContext = createContext();
 
 export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [nextLocation, setNextLocation] = useState(null);
   const [isBlocking, setIsBlocking] = useState(false);
 
   const buddyDetails = useSelector((state) => state.emailverify);
@@ -64,7 +65,12 @@ export const PromptProvider = ({ children }) => {
         sessionStorage.setItem("isAuthenticated", "false");
         sessionStorage.setItem("isFirstLoad", "false");
         alert("Logged out successfully");
-        navigate("/buddy");
+        setIsBlocking(false);
+        if (nextLocation) {
+          navigate(nextLocation.pathname);
+        } else {
+          navigate("/buddy");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -73,6 +79,7 @@ export const PromptProvider = ({ children }) => {
 
   const handleCancel = () => {
     setShowModal(false);
+    setNextLocation(null);
   };
 
   const activatePrompt = (message) => {
@@ -81,26 +88,36 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   };
 
-  // Hook to listen to route changes
   useEffect(() => {
-    const handleRouteChange = (nextLocation) => {
-      if (routesToPrompt.includes(nextLocation.pathname)) {
-        activatePrompt("Are you sure you want to leave this page?");
-        return false; // Prevent navigation
+    const handleBeforeUnload = (e) => {
+      if (isBlocking) {
+        e.preventDefault();
+        e.returnValue = "";
       }
-      return true; // Allow navigation
     };
 
-    // Listen for location changes
-    const unblock = navigate.listen((location) => {
-      handleRouteChange(location);
-    });
+    const handleRouteChange = (e) => {
+      if (isBlocking && routesToPrompt.includes(location.pathname)) {
+        e.preventDefault();
+        activatePrompt("Are you sure you want to leave this page?");
+        setNextLocation(e.detail.location);
+      }
+    };
 
-    // Cleanup listener
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("navigate", handleRouteChange);
+
     return () => {
-      unblock();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("navigate", handleRouteChange);
     };
-  }, [navigate, location, routesToPrompt]);
+  }, [isBlocking, location.pathname, routesToPrompt]);
+
+  useEffect(() => {
+    if (nextLocation && !showModal) {
+      navigate(nextLocation.pathname);
+    }
+  }, [nextLocation, showModal, navigate]);
 
   return (
     <PromptContext.Provider
@@ -110,18 +127,9 @@ export const PromptProvider = ({ children }) => {
         activatePrompt,
         handleConfirm,
         handleCancel,
-        isBlocking,
       }}
     >
       {children}
-      <Prompt
-        when={isBlocking}
-        message={(location) =>
-          routesToPrompt.includes(location.pathname)
-            ? "Are you sure you want to leave this page?"
-            : true
-        }
-      />
       {showModal && (
         <CustomModal
           message={modalMessage}
