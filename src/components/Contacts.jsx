@@ -53,7 +53,10 @@ const Contacts = () => {
 
   // Modal Function
   const handleShowModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setShowNewMsgModal(false);
+  };
 
   //To navigate the user
   const navigate = useNavigate();
@@ -114,6 +117,7 @@ const Contacts = () => {
       console.log("Error fetching fellow buddy details");
     }
     setShowModal(false);
+    setShowNewMsgModal(false);
   };
 
   //Onclicking the Edit button then redirects to the profile page
@@ -294,7 +298,8 @@ const Contacts = () => {
               <div className="modal-content">
                 <div className="modal-header d-flex mx-4 justify-content-between">
                   <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  <GoMail className="fs-4"/> New Messages when you are Offline
+                    <GoMail className="fs-4" />&nbsp; New Messages when you are
+                    Offline
                   </h1>
                   <button
                     type="button"
@@ -303,16 +308,22 @@ const Contacts = () => {
                     onClick={handleCloseModal}
                   ></button>
                 </div>
-                <div className="modal-body">
+                <div className="modal-body mt-2">
                   {newMsg.map((val) => {
                     return (
-                      <div key={val.id} className="d-flex align-items-center">
+                      <div key={val._id} className="d-flex align-items-center">
                         <Avatar
                           alt={val.nickname}
                           src={`${val.image}`}
                           className="ms-2"
                         />
-                        <span className="fs-5 text-primary">{val.nickname}</span>
+                        <span
+                          className="fs-5 text-primary"
+                          type="button"
+                          onClick={() => handleSearchClick(val._id)}
+                        >
+                          {val.nickName}
+                        </span>
                       </div>
                     );
                   })}
