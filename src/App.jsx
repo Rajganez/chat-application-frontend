@@ -1,43 +1,43 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import Loader from './components/Loader';
-import ProtectedRoute from './components/ProtectedRoute';
-import { PromptProvider } from './context/PromptProvider.jsx';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { PromptProvider } from "./context/PromptProvider.jsx";
 
-const Chat = lazy(() => import('./pages/chats/Chat'));
-const Welcome = lazy(() => import('./pages/users/Welcome'));
-const ForgotPassword = lazy(() => import('./pages/users/ForgotPassword'));
-const PasswordReset = lazy(() => import('./pages/users/PasswordReset'));
-const VerifyBuddy = lazy(() => import('./pages/users/VerifyBuddy'));
-const Profile = lazy(() => import('./pages/users/Profile'));
-const ChatBody = lazy(() => import('./pages/chats/ChatBody'));
-const Contacts = lazy(() => import('./components/Contacts'));
-const GroupChatBody = lazy(() => import('./pages/groupchats/GroupChatBody'));
-import WebDisplay from './pages/groupchats/WebDisplay';
+const Chat = lazy(() => import("./pages/chats/Chat"));
+const Welcome = lazy(() => import("./pages/users/Welcome"));
+const ForgotPassword = lazy(() => import("./pages/users/ForgotPassword"));
+const PasswordReset = lazy(() => import("./pages/users/PasswordReset"));
+const VerifyBuddy = lazy(() => import("./pages/users/VerifyBuddy"));
+const Profile = lazy(() => import("./pages/users/Profile"));
+const ChatBody = lazy(() => import("./pages/chats/ChatBody"));
+const Contacts = lazy(() => import("./components/Contacts"));
+const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
+import WebDisplay from "./pages/groupchats/WebDisplay";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Welcome />,
   },
   {
-    path: '/buddy',
+    path: "/buddy",
     element: <Welcome />,
   },
   {
-    path: '/buddy/buddyverify/:id',
+    path: "/buddy/buddyverify/:id",
     element: <VerifyBuddy />,
   },
   {
-    path: '/forgotpassword',
+    path: "/forgotpassword",
     element: <ForgotPassword />,
   },
   {
-    path: '/resetpassword/:id',
+    path: "/resetpassword/:id",
     element: <PasswordReset />,
   },
   {
-    path: '/buddy/profile/:userId',
+    path: "/buddy/profile/:userId",
     element: (
       <ProtectedRoute>
         <Profile />
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/chat/:userid',
+    path: "/chat/:userid",
     element: (
       <ProtectedRoute>
         <Chat />
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/chat/fellowbuddy/:id',
+    path: "/chat/fellowbuddy/:id",
     element: (
       <ProtectedRoute>
         <ChatBody />
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/contacts/:id',
+    path: "/contacts/:id",
     element: (
       <ProtectedRoute>
         <Contacts />
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/groupchat/:id',
+    path: "/groupchat/:id",
     element: (
       <ProtectedRoute>
         <GroupChatBody />
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/group',
+    path: "/group",
     element: (
       <ProtectedRoute>
         <WebDisplay />
@@ -85,7 +85,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '*',
+    path: "*",
     element: <h1>Page not Found</h1>,
   },
 ]);
@@ -94,9 +94,7 @@ function App() {
   return (
     <Suspense fallback={<Loader />}>
       <RouterProvider router={router}>
-        <PromptProvider>
-          {/* Your other components */}
-        </PromptProvider>
+        <PromptProvider></PromptProvider>
       </RouterProvider>
     </Suspense>
   );

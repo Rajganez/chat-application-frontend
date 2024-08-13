@@ -28,7 +28,7 @@ const PromptContext = createContext();
 export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [isBlocking, setIsBlocking] = useState(false);
+  const [ setIsBlocking] = useState(false);
 
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
@@ -74,6 +74,7 @@ export const PromptProvider = ({ children }) => {
 
   const handleCancel = () => {
     setShowModal(false);
+    setIsBlocking(false);
   };
 
   const activatePrompt = useCallback((message) => {
@@ -82,14 +83,25 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   }, []);
 
-  // Using useBlocker hook
-  const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+  useBlocker((tx) => {
     if (
       sessionStorage.getItem("isAuthenticated") === "true" &&
-      routesToPrompt.includes(currentLocation.pathname) &&
-      currentLocation.pathname !== nextLocation.pathname
+      routesToPrompt.includes(location.pathname)
     ) {
       activatePrompt("Are you sure you want to leave this page?");
+      // To handle navigation if user confirms
+      const handleConfirmAndNavigate = async () => {
+        handleConfirm();
+        tx.retry();
+      };
+
+      return (
+        <CustomModal
+          message={modalMessage}
+          onConfirm={handleConfirmAndNavigate}
+          onCancel={handleCancel}
+        />
+      );
     }
   });
 
@@ -104,7 +116,7 @@ export const PromptProvider = ({ children }) => {
       }}
     >
       {children}
-      {showModal && isBlocking && (
+      {showModal && (
         <CustomModal
           message={modalMessage}
           onConfirm={handleConfirm}
@@ -115,7 +127,7 @@ export const PromptProvider = ({ children }) => {
   );
 };
 
-export default PromptProvider;
+export default PromptContext;
 
 PromptProvider.propTypes = {
   children: PropTypes.node,
