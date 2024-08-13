@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo } from "react";
+import { createContext, useState, useMemo, useCallback } from "react";
 import CustomModal from "../components/CustomModal";
 import PropTypes from "prop-types";
 import { clientAPI } from "../api/axios-api.js";
@@ -76,23 +76,21 @@ export const PromptProvider = ({ children }) => {
     setShowModal(false);
   };
 
-  const activatePrompt = (message) => {
+  const activatePrompt = useCallback((message) => {
     setModalMessage(message);
     setShowModal(true);
     setIsBlocking(true);
-  };
+  }, []);
 
-  useBlocker({
-    blockerfn: () => {
-      if (
-        sessionStorage.getItem("isAuthenticated") === "true" &&
-        isBlocking === false &&
-        routesToPrompt.includes(location.pathname)
-      ) {
-        setIsBlocking(true);
-        activatePrompt("Are you sure you want to leave this page?");
-      }
-    },
+  // Using useBlocker hook
+  const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+    if (
+      sessionStorage.getItem("isAuthenticated") === "true" &&
+      routesToPrompt.includes(currentLocation.pathname) &&
+      currentLocation.pathname !== nextLocation.pathname
+    ) {
+      activatePrompt("Are you sure you want to leave this page?");
+    }
   });
 
   return (
@@ -106,7 +104,7 @@ export const PromptProvider = ({ children }) => {
       }}
     >
       {children}
-      {showModal && isBlocking === true && (
+      {showModal && isBlocking && (
         <CustomModal
           message={modalMessage}
           onConfirm={handleConfirm}
@@ -117,7 +115,7 @@ export const PromptProvider = ({ children }) => {
   );
 };
 
-export default PromptContext;
+export default PromptProvider;
 
 PromptProvider.propTypes = {
   children: PropTypes.node,
