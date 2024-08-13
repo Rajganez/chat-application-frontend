@@ -41,24 +41,17 @@ const ProtectedRoute = ({ children }) => {
     setPendingTx(tx);
   }, []);
 
-  useBlocker(
-    (tx) => {
-      console.log("Blocking navigation attempt", tx);
-      if (isAuthenticated() && routesToPrompt.includes(tx.location.pathname)) {
-        activatePromptLocal("Are you sure you want to leave this page?", tx);
-      } else {
-        tx.retry();
-      }
-    },
-    [location.pathname, routesToPrompt, activatePromptLocal]
-  );
+  const blocker = useBlocker(() => {
+    console.log("Blocking navigation attempt");
+    if (isAuthenticated() && routesToPrompt.includes(location.pathname)) {
+      activatePromptLocal("Are you sure you want to leave this page?");
+    }
+  }, [location.pathname, routesToPrompt, activatePromptLocal]);
 
   useEffect(() => {
-    console.log("Pending transaction:", pendingTx);
-    if (showModal && pendingTx) {
-      pendingTx.block();
-    }
-  }, [showModal, pendingTx]);
+    console.log("Pending transaction:");
+    blocker();
+  }, [blocker]);
 
   if (!isAuthenticated()) {
     return <Navigate to="/" />;
