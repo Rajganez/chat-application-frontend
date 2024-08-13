@@ -13,14 +13,12 @@ const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
 import WebDisplay from "./pages/groupchats/WebDisplay";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { PromptProvider } from "./context/PromptProvider.jsx";
 
 function App() {
   return (
     <>
       <Suspense fallback={<Loader />}>
         <BrowserRouter>
-          <PromptProvider>
             <Routes>
               <Route>
                 <Route path="/" element={<Welcome />} />
@@ -83,7 +81,6 @@ function App() {
               </Route>
               <Route path="*" element={<h1>Page not Found</h1>} />
             </Routes>
-          </PromptProvider>
         </BrowserRouter>
       </Suspense>
     </>

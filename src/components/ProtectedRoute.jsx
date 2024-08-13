@@ -1,7 +1,6 @@
 import { Navigate, useLocation, useBlocker } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState, useCallback } from "react";
-import PromptContext from "../context/PromptProvider";
+import { useState, useCallback } from "react";
 import CustomModal from "../components/CustomModal";
 
 // Function to check authentication status
@@ -10,7 +9,6 @@ const isAuthenticated = () => {
 };
 
 const ProtectedRoute = ({ children }) => {
-  const { activatePrompt } = useContext(PromptContext);
   const location = useLocation();
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -19,14 +17,19 @@ const ProtectedRoute = ({ children }) => {
   const routesToPrompt = ["/", "/buddy"];
 
   const handleConfirm = () => {
-    setShowModal(false);
-    setPendingTx(null);
-    pendingTx.retry();
+    if (pendingTx) {
+      setShowModal(false);
+      pendingTx.retry();
+      setPendingTx(null);
+    }
   };
 
   const handleCancel = () => {
     setShowModal(false);
-    setPendingTx(null);
+    if (pendingTx) {
+      pendingTx.block();
+      setPendingTx(null);
+    }
   };
 
   const activatePromptLocal = useCallback((message, tx) => {
@@ -45,12 +48,6 @@ const ProtectedRoute = ({ children }) => {
     },
     [location.pathname, routesToPrompt, activatePromptLocal]
   );
-
-  useEffect(() => {
-    if (showModal && pendingTx) {
-      pendingTx.block();
-    }
-  }, [showModal, pendingTx]);
 
   if (!isAuthenticated()) {
     return <Navigate to="/" />;
