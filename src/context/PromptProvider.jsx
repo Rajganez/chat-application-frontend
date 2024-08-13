@@ -21,20 +21,19 @@ import {
   showMsg,
 } from "../redux/reducerSlice.js";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate } from "react-router-dom";
-import usePrompt from "../hooks/usePrompt.js";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PromptContext = createContext();
 
 export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [nextLocation, setNextLocation] = useState(null);
   const [isBlocking, setIsBlocking] = useState(false);
 
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Memoize routesToPrompt to prevent unnecessary effect re-runs
   const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
@@ -66,11 +65,7 @@ export const PromptProvider = ({ children }) => {
         sessionStorage.setItem("isFirstLoad", "false");
         alert("Logged out successfully");
         setIsBlocking(false);
-        if (nextLocation) {
-          navigate(nextLocation.pathname);
-        } else {
-          navigate("/buddy");
-        }
+        navigate("/buddy");
       }
     } catch (error) {
       console.log(error);
@@ -79,7 +74,6 @@ export const PromptProvider = ({ children }) => {
 
   const handleCancel = () => {
     setShowModal(false);
-    setNextLocation(null);
   };
 
   const activatePrompt = (message) => {
@@ -88,16 +82,14 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   };
 
-  usePrompt(
-    "Are you sure you want to leave this page?",
-    isBlocking && routesToPrompt.includes(nextLocation?.pathname)
-  );
-
   useEffect(() => {
-    if (nextLocation && !showModal) {
-      navigate(nextLocation.pathname);
+    if (sessionStorage.getItem("isAuthenticated") === "true" && isBlocking !== false) {
+      if (routesToPrompt.includes(location.pathname)) {
+        setIsBlocking(true);
+        activatePrompt("Are you sure you want to leave this page?");
+      }
     }
-  }, [nextLocation, showModal, navigate]);
+  }, [location.pathname, isBlocking, routesToPrompt, navigate]);
 
   return (
     <PromptContext.Provider
@@ -110,7 +102,7 @@ export const PromptProvider = ({ children }) => {
       }}
     >
       {children}
-      {showModal && (
+      {showModal && isBlocking === true && (
         <CustomModal
           message={modalMessage}
           onConfirm={handleConfirm}
