@@ -36,7 +36,9 @@ const Login = () => {
       const { emailVerifed, profiling, userID, imageStr } = response.data;
 
       if (status === 200 && emailVerifed && profiling) {
-        sessionStorage.setItem("isAuthenticated", "true");
+        setTimeout(() => {
+          sessionStorage.setItem("isAuthenticated", "true");
+        }, 2000);
         navigate(`/chat/${userID}`);
         dispatch(setVerified(emailVerifed));
       } else if (status === 200) {
