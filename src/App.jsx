@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { PromptProvider } from "./context/PromptProvider.jsx";
 
 const Chat = lazy(() => import("./pages/chats/Chat"));
 const Welcome = lazy(() => import("./pages/users/Welcome"));
@@ -93,9 +92,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Suspense fallback={<Loader />}>
-      <PromptProvider>
-        <RouterProvider router={router} />
-      </PromptProvider>
+      <RouterProvider router={router} />
     </Suspense>
   );
 }
