@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, useCallback } from "react";
+import { createContext, useState, useMemo, useEffect } from "react";
 import CustomModal from "../components/CustomModal";
 import PropTypes from "prop-types";
 import { clientAPI } from "../api/axios-api.js";
@@ -21,7 +21,7 @@ import {
   showMsg,
 } from "../redux/reducerSlice.js";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, useLocation, useBlocker } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PromptContext = createContext();
 
@@ -29,7 +29,6 @@ export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [isBlocking, setIsBlocking] = useState(false);
-  const [pendingTx, setPendingTx] = useState(null);
 
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
@@ -66,11 +65,7 @@ export const PromptProvider = ({ children }) => {
         sessionStorage.setItem("isFirstLoad", "false");
         alert("Logged out successfully");
         setIsBlocking(false);
-        if (pendingTx) {
-          pendingTx.retry();
-        } else {
-          navigate("/buddy");
-        }
+        navigate("/buddy");
       }
     } catch (error) {
       console.log(error);
@@ -79,27 +74,24 @@ export const PromptProvider = ({ children }) => {
 
   const handleCancel = () => {
     setShowModal(false);
-    setIsBlocking(false);
-    setPendingTx(null);
   };
 
-  const activatePrompt = useCallback((message, tx) => {
+  const activatePrompt = (message) => {
     setModalMessage(message);
     setShowModal(true);
     setIsBlocking(true);
-    setPendingTx(tx);
-  }, []);
+  };
 
-  useBlocker((tx) => {
+  useEffect(() => {
     if (
       sessionStorage.getItem("isAuthenticated") === "true" &&
+      isBlocking === false &&
       routesToPrompt.includes(location.pathname)
     ) {
-      activatePrompt("Are you sure you want to leave this page?", tx);
-    } else {
-      tx.retry();
+      setIsBlocking(true);
+      activatePrompt("Are you sure you want to leave this page?");
     }
-  }, [location.pathname, routesToPrompt, activatePrompt]);
+  }, [location.pathname, isBlocking, routesToPrompt, navigate]);
 
   return (
     <PromptContext.Provider
@@ -112,7 +104,7 @@ export const PromptProvider = ({ children }) => {
       }}
     >
       {children}
-      {showModal && (
+      {showModal && isBlocking === true && (
         <CustomModal
           message={modalMessage}
           onConfirm={handleConfirm}
