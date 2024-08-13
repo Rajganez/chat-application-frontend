@@ -1,5 +1,5 @@
 import { clientAPI } from "../../api/axios-api.js";
-import { GET_BUDDY, LOGOUT_ROUTE } from "../../api/constants.js";
+import { GET_BUDDY } from "../../api/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loggedBuddy,
@@ -7,21 +7,10 @@ import {
   setLast,
   setNick,
   setUserImage,
-  setFellowNick,
-  setScreen,
-  setFellowImage,
-  setFellowId,
-  setGroupAuth,
-  setGroupId,
-  setGroupName,
-  setNotification,
-  showMsg,
 } from "../../redux/reducerSlice.js";
-import { addMessage } from "../../redux/socketSlice.js";
-import { useBlocker, useParams } from "react-router-dom";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
 import Loader from "../../components/Loader.jsx";
-import CustomModal from "../../components/CustomModal.jsx";
 const ChatBody = lazy(() => import("./ChatBody.jsx"));
 const Contacts = lazy(() => import("../../components/Contacts.jsx"));
 const EmptyChat = lazy(() => import("../../components/EmptyChat.jsx"));
@@ -32,58 +21,6 @@ const Chat = () => {
   const dispatch = useDispatch();
   //Use params
   const { userid } = useParams();
-  const [showModal, setShowModal] = useState(false);
-
-  const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
-
-  let blocker = useBlocker(
-    ({ nextLocation }) =>
-      routesToPrompt.includes(nextLocation.pathname) &&
-      sessionStorage.getItem("isAuthenticated") === "true"
-  );
-
-  const handleConfirm = async () => {
-    try {
-      const response = await clientAPI.post(
-        LOGOUT_ROUTE,
-        { id: showSplit.buddyId },
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        dispatch(setNick(null));
-        dispatch(setFellowNick(null));
-        dispatch(loggedBuddy(null));
-        dispatch(setUserImage(null));
-        dispatch(setFirst(null));
-        dispatch(setLast(null));
-        dispatch(setScreen(false));
-        dispatch(setFellowImage(null));
-        dispatch(setFellowId(null));
-        dispatch(setGroupAuth(false));
-        dispatch(setGroupId(null));
-        dispatch(setGroupName(null));
-        dispatch(setNotification([]));
-        dispatch(addMessage([]));
-        dispatch(showMsg(false));
-        sessionStorage.setItem("isAuthenticated", "false");
-        sessionStorage.setItem("isFirstLoad", "false");
-        alert("Logged out successfully");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    blocker.proceed();
-  };
-
-  const handleCancel = () => {
-    blocker.reset();
-  };
-
-  if (blocker.state === "blocked") {
-    setShowModal(true);
-  }
 
   //Onmounting get all the details of the logged user from the API call
   useEffect(() => {
@@ -107,14 +44,6 @@ const Chat = () => {
   return (
     <>
       <Suspense fallback={<Loader />}>
-        {blocker.state === "blocked"
-          ? // <CustomModal
-            //   message={"Do you want to leave this page"}
-            //   onConfirm={handleConfirm}
-            //   onCancel={handleCancel}
-            // />
-            console.log("blocked")
-          : null}
         <div className="container">
           <div className="showWebView">
             <div className="contacts">
