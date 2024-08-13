@@ -1,6 +1,6 @@
-import { Navigate, useLocation, useBlocker } from "react-router-dom";
+import { Navigate, useLocation, unstable_useBlocker as useBlocker } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CustomModal from "../components/CustomModal";
 
 // Function to check authentication status
@@ -17,6 +17,7 @@ const ProtectedRoute = ({ children }) => {
   const routesToPrompt = ["/", "/buddy"];
 
   const handleConfirm = () => {
+    console.log('Confirm clicked, retrying navigation');
     if (pendingTx) {
       setShowModal(false);
       pendingTx.retry();
@@ -25,6 +26,7 @@ const ProtectedRoute = ({ children }) => {
   };
 
   const handleCancel = () => {
+    console.log('Cancel clicked, blocking navigation');
     setShowModal(false);
     if (pendingTx) {
       pendingTx.block();
@@ -33,6 +35,7 @@ const ProtectedRoute = ({ children }) => {
   };
 
   const activatePromptLocal = useCallback((message, tx) => {
+    console.log('Prompt activated', message, tx);
     setModalMessage(message);
     setShowModal(true);
     setPendingTx(tx);
@@ -40,6 +43,7 @@ const ProtectedRoute = ({ children }) => {
 
   useBlocker(
     (tx) => {
+      console.log('Blocking navigation attempt', tx);
       if (isAuthenticated() && routesToPrompt.includes(tx.location.pathname)) {
         activatePromptLocal("Are you sure you want to leave this page?", tx);
       } else {
@@ -48,6 +52,13 @@ const ProtectedRoute = ({ children }) => {
     },
     [location.pathname, routesToPrompt, activatePromptLocal]
   );
+
+  useEffect(() => {
+    console.log('Pending transaction:', pendingTx);
+    if (showModal && pendingTx) {
+      pendingTx.block();
+    }
+  }, [showModal, pendingTx]);
 
   if (!isAuthenticated()) {
     return <Navigate to="/" />;
