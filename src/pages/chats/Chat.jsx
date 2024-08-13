@@ -1,5 +1,5 @@
 import { clientAPI } from "../../api/axios-api.js";
-import { GET_BUDDY } from "../../api/constants.js";
+import { GET_BUDDY, LOGOUT_ROUTE } from "../../api/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loggedBuddy,
@@ -18,7 +18,6 @@ import {
   addMessage,
   showMsg,
 } from "../../redux/reducerSlice.js";
-import { LOGOUT_ROUTE } from "../../api/axios-api.js";
 import { useBlocker, useParams } from "react-router-dom";
 import { lazy, Suspense, useEffect, useMemo } from "react";
 import Loader from "../../components/Loader.jsx";
