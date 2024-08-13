@@ -28,7 +28,8 @@ const PromptContext = createContext();
 export const PromptProvider = ({ children }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [ setIsBlocking] = useState(false);
+  const [isBlocking, setIsBlocking] = useState(false);
+  const [pendingTx, setPendingTx] = useState(null);
 
   const buddyDetails = useSelector((state) => state.emailverify);
   const dispatch = useDispatch();
@@ -65,7 +66,11 @@ export const PromptProvider = ({ children }) => {
         sessionStorage.setItem("isFirstLoad", "false");
         alert("Logged out successfully");
         setIsBlocking(false);
-        navigate("/buddy");
+        if (pendingTx) {
+          pendingTx.retry();
+        } else {
+          navigate("/buddy");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -75,12 +80,14 @@ export const PromptProvider = ({ children }) => {
   const handleCancel = () => {
     setShowModal(false);
     setIsBlocking(false);
+    setPendingTx(null);
   };
 
-  const activatePrompt = useCallback((message) => {
+  const activatePrompt = useCallback((message, tx) => {
     setModalMessage(message);
     setShowModal(true);
     setIsBlocking(true);
+    setPendingTx(tx);
   }, []);
 
   useBlocker((tx) => {
@@ -88,22 +95,11 @@ export const PromptProvider = ({ children }) => {
       sessionStorage.getItem("isAuthenticated") === "true" &&
       routesToPrompt.includes(location.pathname)
     ) {
-      activatePrompt("Are you sure you want to leave this page?");
-      // To handle navigation if user confirms
-      const handleConfirmAndNavigate = async () => {
-        handleConfirm();
-        tx.retry();
-      };
-
-      return (
-        <CustomModal
-          message={modalMessage}
-          onConfirm={handleConfirmAndNavigate}
-          onCancel={handleCancel}
-        />
-      );
+      activatePrompt("Are you sure you want to leave this page?", tx);
+    } else {
+      tx.retry();
     }
-  });
+  }, [location.pathname, routesToPrompt, activatePrompt]);
 
   return (
     <PromptContext.Provider
