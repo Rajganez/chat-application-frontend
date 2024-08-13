@@ -83,11 +83,13 @@ export const PromptProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("isAuthenticated") === "true" && isBlocking !== false) {
-      if (routesToPrompt.includes(location.pathname)) {
-        setIsBlocking(true);
-        activatePrompt("Are you sure you want to leave this page?");
-      }
+    if (
+      sessionStorage.getItem("isAuthenticated") === "true" &&
+      isBlocking === false &&
+      routesToPrompt.includes(location.pathname)
+    ) {
+      setIsBlocking(true);
+      activatePrompt("Are you sure you want to leave this page?");
     }
   }, [location.pathname, isBlocking, routesToPrompt, navigate]);
 
