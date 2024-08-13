@@ -15,9 +15,9 @@ import {
   setGroupId,
   setGroupName,
   setNotification,
-  addMessage,
   showMsg,
 } from "../../redux/reducerSlice.js";
+import { addMessage } from "../../redux/socketSlice.js";
 import { useBlocker, useParams } from "react-router-dom";
 import { lazy, Suspense, useEffect, useMemo } from "react";
 import Loader from "../../components/Loader.jsx";
