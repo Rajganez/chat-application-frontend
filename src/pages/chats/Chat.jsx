@@ -21,7 +21,6 @@ import { addMessage } from "../../redux/socketSlice.js";
 import { useBlocker, useParams } from "react-router-dom";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import Loader from "../../components/Loader.jsx";
-import sessionStorage from "redux-persist/es/storage/session";
 import CustomModal from "../../components/CustomModal.jsx";
 const ChatBody = lazy(() => import("./ChatBody.jsx"));
 const Contacts = lazy(() => import("../../components/Contacts.jsx"));
