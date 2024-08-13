@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, useEffect } from "react";
+import { createContext, useState, useMemo } from "react";
 import CustomModal from "../components/CustomModal";
 import PropTypes from "prop-types";
 import { clientAPI } from "../api/axios-api.js";
@@ -21,7 +21,7 @@ import {
   showMsg,
 } from "../redux/reducerSlice.js";
 import { addMessage } from "../redux/socketSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useBlocker } from "react-router-dom";
 
 const PromptContext = createContext();
 
@@ -82,16 +82,18 @@ export const PromptProvider = ({ children }) => {
     setIsBlocking(true);
   };
 
-  useEffect(() => {
-    if (
-      sessionStorage.getItem("isAuthenticated") === "true" &&
-      isBlocking === false &&
-      routesToPrompt.includes(location.pathname)
-    ) {
-      setIsBlocking(true);
-      activatePrompt("Are you sure you want to leave this page?");
-    }
-  }, [location.pathname, isBlocking, routesToPrompt, navigate]);
+  useBlocker({
+    blockerfn: () => {
+      if (
+        sessionStorage.getItem("isAuthenticated") === "true" &&
+        isBlocking === false &&
+        routesToPrompt.includes(location.pathname)
+      ) {
+        setIsBlocking(true);
+        activatePrompt("Are you sure you want to leave this page?");
+      }
+    },
+  });
 
   return (
     <PromptContext.Provider

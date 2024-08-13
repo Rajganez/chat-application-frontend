@@ -9,6 +9,7 @@ import { persistStore } from "redux-persist";
 import { SocketProvider } from "./context/SocketContext.jsx";
 import Loader from "./components/Loader.jsx";
 
+
 const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
