@@ -19,7 +19,7 @@ import {
 } from "../../redux/reducerSlice.js";
 import { addMessage } from "../../redux/socketSlice.js";
 import { useBlocker, useParams } from "react-router-dom";
-import { lazy, Suspense, useEffect, useMemo } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import Loader from "../../components/Loader.jsx";
 import sessionStorage from "redux-persist/es/storage/session";
 import CustomModal from "../../components/CustomModal.jsx";
@@ -33,6 +33,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   //Use params
   const { userid } = useParams();
+  const [showModal, setShowModal] = useState(false);
 
   const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
 
@@ -81,6 +82,10 @@ const Chat = () => {
     blocker.reset();
   };
 
+  if (blocker.state === "blocked") {
+    setShowModal(true);
+  }
+
   //Onmounting get all the details of the logged user from the API call
   useEffect(() => {
     const getBuddy = async () => {
@@ -103,13 +108,14 @@ const Chat = () => {
   return (
     <>
       <Suspense fallback={<Loader />}>
-        {blocker.state === "blocked" ? (
-          <CustomModal
-            message={"Do you want to leave this page"}
-            onConfirm={handleConfirm}
-            onCancel={handleCancel}
-          />
-        ) : null}
+        {blocker.state === "blocked"
+          ? // <CustomModal
+            //   message={"Do you want to leave this page"}
+            //   onConfirm={handleConfirm}
+            //   onCancel={handleCancel}
+            // />
+            console.log("blocked")
+          : null}
         <div className="container">
           <div className="showWebView">
             <div className="contacts">
