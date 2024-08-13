@@ -26,14 +26,14 @@ const CustomModal = ({ message, onConfirm, onCancel }) => {
               className="btn btn-secondary"
               onClick={onCancel}
             >
-              No
+              Stay
             </button>
             <button
               type="button"
               className="btn btn-primary"
               onClick={onConfirm}
             >
-              Yes
+              Logout
             </button>
           </div>
         </div>
