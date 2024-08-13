@@ -36,15 +36,11 @@ const Chat = () => {
 
   const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
 
-  let blocker = useBlocker(({ nextLocation }) => {
-    if (
+  let blocker = useBlocker(
+    ({ nextLocation }) =>
       routesToPrompt.includes(nextLocation.pathname) &&
       sessionStorage.getItem("isAuthenticated") === "true"
-    ) {
-      return true;
-    }
-    return false;
-  });
+  );
 
   const handleConfirm = async () => {
     try {
@@ -78,7 +74,7 @@ const Chat = () => {
     } catch (error) {
       console.log(error);
     }
-    blocker.reset();
+    blocker.proceed();
   };
 
   const handleCancel = () => {
@@ -107,13 +103,13 @@ const Chat = () => {
   return (
     <>
       <Suspense fallback={<Loader />}>
-        {blocker.state === "blocked" && (
+        {blocker.state === "blocked" ? (
           <CustomModal
             message={"Do you want to leave this page"}
             onConfirm={handleConfirm}
             onCancel={handleCancel}
           />
-        )}
+        ) : null}
         <div className="container">
           <div className="showWebView">
             <div className="contacts">
