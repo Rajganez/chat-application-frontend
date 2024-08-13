@@ -13,10 +13,10 @@ const Welcome = () => {
 
   const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
 
-  let blocker = useBlocker(({ currentLocation }) => {
+  let blocker = useBlocker(({ currentLocation, nextLocation }) => {
     if (
       sessionStorage.getItem("isAuthenticated") === true &&
-      routesToPrompt.includes(currentLocation.pathname)
+      routesToPrompt.includes(nextLocation.pathname)
     ) {
       return true;
     }
