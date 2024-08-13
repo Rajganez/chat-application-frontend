@@ -1,35 +1,13 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Login from "./../../components/Login.jsx";
 import Register from "./../../components/Register.jsx";
 import "../../App.css";
 import background from "../../assets/sidebarimage.jpg";
-import { useBlocker } from "react-router-dom";
-import CustomModal from "../../components/CustomModal.jsx";
 
-// Both Login and Register Component used in the Page
 const Welcome = () => {
   //State to navigate to Login and Register pages
   const [activeTab, setActiveTab] = useState("login");
-
-  const routesToPrompt = useMemo(() => ["/", "/buddy"], []);
-
-  let blocker = useBlocker(({ currentLocation, nextLocation }) => {
-    if (
-      sessionStorage.getItem("isAuthenticated") === true &&
-      routesToPrompt.includes(nextLocation.pathname)
-    ) {
-      return true;
-    }
-    return false;
-  });
-
-  const handleConfirm = () => {
-    blocker.proceed();
-  };
-  const handleCancel = () => {
-    blocker.reset();
-  };
-
+  // Both Login and Register Component used in the Page
   return (
     <div className="container">
       <div className="d-flex justify-content-center align-items-center vh-100 rounded-4">
@@ -50,7 +28,8 @@ const Welcome = () => {
                     <div className="slackey-regular"> Hi! Buddy</div>
                   </h2>
                   <div className="caveat text-center">
-                    Get Verified your E-mail and Chat with your Buddies Online
+                    Get Verified your E-mail and
+                    Chat with your Buddies Online
                   </div>
                 </div>
                 <div className="p-4 register-form form-container">
@@ -129,13 +108,6 @@ const Welcome = () => {
           </div>
         </div>
       </div>
-      {blocker.state === "blocked" ? (
-        <CustomModal
-          message={"Do you want to Leave this Page"}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
-        />
-      ) : null}
     </div>
   );
 };

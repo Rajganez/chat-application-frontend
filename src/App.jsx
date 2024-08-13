@@ -1,8 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
 import { lazy, Suspense } from "react";
-import Loader from "./components/Loader";
-import ProtectedRoute from "./components/ProtectedRoute";
-
 const Chat = lazy(() => import("./pages/chats/Chat"));
 const Welcome = lazy(() => import("./pages/users/Welcome"));
 const ForgotPassword = lazy(() => import("./pages/users/ForgotPassword"));
@@ -13,87 +11,76 @@ const ChatBody = lazy(() => import("./pages/chats/ChatBody"));
 const Contacts = lazy(() => import("./components/Contacts"));
 const GroupChatBody = lazy(() => import("./pages/groupchats/GroupChatBody"));
 import WebDisplay from "./pages/groupchats/WebDisplay";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Welcome />,
-  },
-  {
-    path: "/buddy",
-    element: <Welcome />,
-  },
-  {
-    path: "/buddy/buddyverify/:id",
-    element: <VerifyBuddy />,
-  },
-  {
-    path: "/forgotpassword",
-    element: <ForgotPassword />,
-  },
-  {
-    path: "/resetpassword/:id",
-    element: <PasswordReset />,
-  },
-  {
-    path: "/buddy/profile/:userId",
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/chat/:userid",
-    element: (
-      <ProtectedRoute>
-        <Chat />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/chat/fellowbuddy/:id",
-    element: (
-      <ProtectedRoute>
-        <ChatBody />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/contacts/:id",
-    element: (
-      <ProtectedRoute>
-        <Contacts />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/groupchat/:id",
-    element: (
-      <ProtectedRoute>
-        <GroupChatBody />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/group",
-    element: (
-      <ProtectedRoute>
-        <WebDisplay />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "*",
-    element: <h1>Page not Found</h1>,
-  },
-]);
+import Loader from "./components/Loader";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <Suspense fallback={<Loader />}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <>
+      <Suspense fallback={<Loader />}>
+        <BrowserRouter>
+          <Routes>
+            <Route>
+              <Route path="/" element={<Welcome />} />
+              <Route path="/buddy" element={<Welcome />} />
+              <Route path="/buddy/buddyverify/:id" element={<VerifyBuddy />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/resetpassword/:id" element={<PasswordReset />} />
+
+              <Route
+                path="/buddy/profile/:userId"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat/:userid"
+                element={
+                  <ProtectedRoute>
+                    <Chat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat/fellowbuddy/:id"
+                element={
+                  <ProtectedRoute>
+                    <ChatBody />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/contacts/:id"
+                element={
+                  <ProtectedRoute>
+                    <Contacts />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/groupchat/:id"
+                element={
+                  <ProtectedRoute>
+                    <GroupChatBody />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/group"
+                element={
+                  <ProtectedRoute>
+                    <WebDisplay />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="*" element={<h1>Page not Found</h1>} />
+          </Routes>
+        </BrowserRouter>
+      </Suspense>
+    </>
   );
 }
 
