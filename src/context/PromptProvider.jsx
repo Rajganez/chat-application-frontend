@@ -19,7 +19,7 @@ import {
   setScreen,
   setUserImage,
   showMsg,
-} from "../redux/reducerSlice";
+} from "../redux/reducerSlice.js";
 import { addMessage } from "../redux/socketSlice";
 import { useNavigate } from "react-router-dom";
 import usePrompt from "../hooks/usePrompt.js";
@@ -92,21 +92,6 @@ export const PromptProvider = ({ children }) => {
     "Are you sure you want to leave this page?",
     isBlocking && routesToPrompt.includes(nextLocation?.pathname)
   );
-
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      if (isBlocking) {
-        e.preventDefault();
-        e.returnValue = ""; // Prompt user with a native browser alert
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [isBlocking]);
 
   useEffect(() => {
     if (nextLocation && !showModal) {
