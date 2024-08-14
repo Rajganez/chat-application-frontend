@@ -1,5 +1,0 @@
-[[headers]]
-for = "/*"
-  [headers.values]
-  Access-Control-Allow-Origin = "https://chat-application-backend-z5hf.onrender.com"
-  Access-Control-Allow-Credentials = "true"
