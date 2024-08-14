@@ -31,9 +31,7 @@ const Register = () => {
   //Axios API-Call
   const registeredData = async () => {
     try {
-      const response = await clientAPI.post(SIGNUP_ROUTE, formData, {
-        withCredentials: true,
-      });
+      const response = await clientAPI.post(SIGNUP_ROUTE, formData);
       if (response.status === 201) {
         alert("Buddy registered successfully! Please proceed to login.");
         localStorage.setItem("isVerifyToken", response.data.userToken);

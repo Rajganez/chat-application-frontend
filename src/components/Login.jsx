@@ -29,9 +29,7 @@ const Login = () => {
   //Axios API-Call
   const loginFunc = async () => {
     try {
-      const response = await clientAPI.post(LOGIN_ROUTE, formData, {
-        withCredentials: true,
-      });
+      const response = await clientAPI.post(LOGIN_ROUTE, formData);
       const { status } = response;
       const { emailVerifed, profiling, userID, imageStr } = response.data;
 

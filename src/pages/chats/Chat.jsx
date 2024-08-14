@@ -42,12 +42,13 @@ const Chat = () => {
     return sessionStorage.getItem("isAuthenticated") === "true";
   };
 
+  //To prevent the user to return to the login without closing the session
   let blocker = useBlocker(
     ({ nextLocation }) =>
       isAuthenticated() &&
       (nextLocation.pathname === "/" || nextLocation.pathname === "/buddy")
   );
-
+  //Used handle out to Logout the user
   const handleLogout = async () => {
     try {
       const response = await clientAPI.post(
