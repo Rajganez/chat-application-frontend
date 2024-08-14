@@ -17,7 +17,6 @@ So Two different Components structure used for these chat types.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
