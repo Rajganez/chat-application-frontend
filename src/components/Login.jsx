@@ -12,7 +12,7 @@ const Login = () => {
   const intialForm = {
     loginEmail: "",
     LoginPassword: "",
-    confirmLoginPassword: "",
+    // confirmLoginPassword: "",
   };
 
   //State to send the payload
@@ -71,10 +71,10 @@ const Login = () => {
   // Handling Login Submit Button with Handled Form Error
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.LoginPassword !== formData.confirmLoginPassword) {
-      setError("Password and Confirm Password do not match.");
-      return;
-    }
+    // if (formData.LoginPassword !== formData.confirmLoginPassword) {
+    //   setError("Password and Confirm Password do not match.");
+    //   return;
+    // }
     if (
       !formData.loginEmail.includes("@") ||
       !formData.loginEmail.endsWith(".com")
@@ -94,7 +94,7 @@ const Login = () => {
   return (
     <>
       <form>
-        <div className="form-group mt-3">
+        <div className="form-group my-5">
           <label htmlFor="loginEmail">
             Email ID <span className="text-danger">*</span>
           </label>
@@ -108,7 +108,7 @@ const Login = () => {
             required
           />
         </div>
-        <div className="form-group mt-3">
+        <div className="form-group my-5">
           <label htmlFor="LoginPassword">
             Password <span className="text-danger">*</span>
           </label>
@@ -122,11 +122,11 @@ const Login = () => {
             required
           />
         </div>
-        <div className="form-group mt-3">
-          <label htmlFor="confirmLoginPassword">
+        {/* <div className="form-group mt-3"> */}
+          {/* <label htmlFor="confirmLoginPassword">
             Confirm Password <span className="text-danger">*</span>
-          </label>
-          <input
+          </label> */}
+          {/* <input
             type="password"
             className="form-control"
             id="confirmLoginPassword"
@@ -134,12 +134,12 @@ const Login = () => {
             value={formData.confirmLoginPassword}
             onChange={handleChange}
             required
-          />
-        </div>
-        <NavLink to="/forgotpassword" className="forgot-password">
+          /> */}
+        {/* </div> */}
+        <NavLink to="/forgotpassword" className="forgot-password my-5">
           Forgotten Password?
         </NavLink>
-        <div className="d-flex row justify-content-center mt-5">
+        <div className="d-flex row justify-content-center my-2">
           <button
             type="submit"
             onClick={handleSubmit}

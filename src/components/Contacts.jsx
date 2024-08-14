@@ -271,7 +271,7 @@ const Contacts = () => {
                 const { nick, img } = result;
                 return (
                   <span key={key} className="d-flex mt-2">
-                    <Avatar alt={nick} src={`${img}`} className="ms-2" />
+                    <Avatar alt={nick} src={img} className="ms-2" />
                     <span
                       className="list-group-item fs-5 mt-2 ms-2 text-primary"
                       type="button"
@@ -324,7 +324,7 @@ const Contacts = () => {
                       <div key={val._id} className="d-flex align-items-center">
                         <Avatar
                           alt={val.nickname}
-                          src={`${val.image}`}
+                          src={val.image}
                           className="ms-2"
                         />
                         <span
