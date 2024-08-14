@@ -1,16 +1,25 @@
 import { clientAPI } from "../../api/axios-api.js";
-import { GET_BUDDY } from "../../api/constants.js";
+import { GET_BUDDY, LOGOUT_ROUTE } from "../../api/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loggedBuddy,
+  setFellowId,
+  setFellowImage,
+  setFellowNick,
   setFirst,
+  setGroupAuth,
+  setGroupId,
+  setGroupName,
   setLast,
   setNick,
+  setNotification,
+  setScreen,
   setUserImage,
+  showMsg,
 } from "../../redux/reducerSlice.js";
 import { useBlocker, useParams } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
-import Loader from "../../components/Loader.jsx";
+import { useEffect } from "react";
+// import Loader from "../../components/Loader.jsx";
 import ChatBody from "./ChatBody.jsx";
 // const ChatBody = lazy(() => import("./ChatBody.jsx"));
 import Contacts from "../../components/Contacts.jsx";
@@ -18,6 +27,7 @@ import Contacts from "../../components/Contacts.jsx";
 // const EmptyChat = lazy(() => import("../../components/EmptyChat.jsx"));
 import EmptyChat from "../../components/EmptyChat.jsx";
 import CustomModal from "../../components/CustomModal.jsx";
+import { addMessage } from "../../redux/socketSlice.js";
 
 const Chat = () => {
   //Get Redux action instance
@@ -25,6 +35,8 @@ const Chat = () => {
   const dispatch = useDispatch();
   //Use params
   const { userid } = useParams();
+
+  const buddyDetails = useSelector((state) => state.emailverify);
 
   const isAuthenticated = () => {
     return sessionStorage.getItem("isAuthenticated") === "true";
@@ -35,6 +47,45 @@ const Chat = () => {
       isAuthenticated() &&
       (nextLocation.pathname === "/" || nextLocation.pathname === "/buddy")
   );
+
+  const handleLogout = async () => {
+    try {
+      const response = await clientAPI.post(
+        LOGOUT_ROUTE,
+        { id: buddyDetails.buddyId },
+        {
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        dispatch(setNick(null));
+        dispatch(setFellowNick(null));
+        dispatch(loggedBuddy(null));
+        dispatch(setUserImage(null));
+        dispatch(setFirst(null));
+        dispatch(setLast(null));
+        dispatch(setScreen(false));
+        dispatch(setFellowImage(null));
+        dispatch(setFellowId(null));
+        dispatch(setGroupAuth(false));
+        dispatch(setGroupId(null));
+        dispatch(setGroupName(null));
+        dispatch(setNotification([]));
+        dispatch(addMessage([]));
+        dispatch(showMsg(false));
+        sessionStorage.setItem("isAuthenticated", "false");
+        sessionStorage.setItem("isFirstLoad", "false");
+        alert("Logged out successfully");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    blocker.proceed();
+  };
+
+  const handleStay = () => {
+    blocker.reset();
+  };
 
   //Onmounting get all the details of the logged user from the API call
   useEffect(() => {
@@ -58,21 +109,27 @@ const Chat = () => {
   return (
     <>
       {/* <Suspense fallback={<Loader />}> */}
-        <div className="container">
-          {blocker.state === "blocked" ? <CustomModal /> : null}
-          <div className="showWebView">
-            <div className="contacts">
-              <Contacts />
-            </div>
-            {showSplit.screen === false ? (
-              <EmptyChat />
-            ) : (
-              <div className="chatBody">
-                <ChatBody />
-              </div>
-            )}
+      <div className="container">
+        {blocker.state === "blocked" ? (
+          <CustomModal
+            message={"Do You want to Leave this Page"}
+            onConfirm={handleLogout}
+            onCancel={handleStay}
+          />
+        ) : null}
+        <div className="showWebView">
+          <div className="contacts">
+            <Contacts />
           </div>
+          {showSplit.screen === false ? (
+            <EmptyChat />
+          ) : (
+            <div className="chatBody">
+              <ChatBody />
+            </div>
+          )}
         </div>
+      </div>
       {/* </Suspense> */}
     </>
   );
