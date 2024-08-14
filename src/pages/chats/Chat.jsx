@@ -8,12 +8,16 @@ import {
   setNick,
   setUserImage,
 } from "../../redux/reducerSlice.js";
-import { useParams } from "react-router-dom";
+import { useBlocker, useParams } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import Loader from "../../components/Loader.jsx";
-const ChatBody = lazy(() => import("./ChatBody.jsx"));
-const Contacts = lazy(() => import("../../components/Contacts.jsx"));
-const EmptyChat = lazy(() => import("../../components/EmptyChat.jsx"));
+import ChatBody from "./ChatBody.jsx";
+// const ChatBody = lazy(() => import("./ChatBody.jsx"));
+import Contacts from "../../components/Contacts.jsx";
+// const Contacts = lazy(() => import("../../components/Contacts.jsx"));
+// const EmptyChat = lazy(() => import("../../components/EmptyChat.jsx"));
+import EmptyChat from "../../components/EmptyChat.jsx";
+import CustomModal from "../../components/CustomModal.jsx";
 
 const Chat = () => {
   //Get Redux action instance
@@ -21,6 +25,16 @@ const Chat = () => {
   const dispatch = useDispatch();
   //Use params
   const { userid } = useParams();
+
+  const isAuthenticated = () => {
+    return sessionStorage.getItem("isAuthenticated") === "true";
+  };
+
+  let blocker = useBlocker(
+    ({ nextLocation }) =>
+      isAuthenticated() &&
+      (nextLocation.pathname === "/" || nextLocation.pathname === "/buddy")
+  );
 
   //Onmounting get all the details of the logged user from the API call
   useEffect(() => {
@@ -43,8 +57,9 @@ const Chat = () => {
   // Main Container that shows the below components
   return (
     <>
-      <Suspense fallback={<Loader />}>
+      {/* <Suspense fallback={<Loader />}> */}
         <div className="container">
+          {blocker.state === "blocked" ? <CustomModal /> : null}
           <div className="showWebView">
             <div className="contacts">
               <Contacts />
@@ -58,7 +73,7 @@ const Chat = () => {
             )}
           </div>
         </div>
-      </Suspense>
+      {/* </Suspense> */}
     </>
   );
 };

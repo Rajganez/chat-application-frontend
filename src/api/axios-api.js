@@ -10,6 +10,8 @@ export const clientAPI = axios.create({
   },
 });
 
+axios.defaults.withCredentials = true;
+
 //To Add Header-Authorisation to Verify the User using Email
 
 clientAPI.interceptors.request.use(
