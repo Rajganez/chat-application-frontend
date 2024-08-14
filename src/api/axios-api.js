@@ -4,13 +4,12 @@ import { HOST } from "./constants.js";
 //Axios configuration for API requests
 export const clientAPI = axios.create({
   baseURL: HOST,
+  withCredentials: true,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
-axios.defaults.withCredentials = true;
 
 //To Add Header-Authorisation to Verify the User using Email
 
