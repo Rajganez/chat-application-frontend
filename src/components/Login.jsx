@@ -105,6 +105,7 @@ const Login = () => {
             value={formData.loginEmail}
             onChange={handleChange}
             id="loginEmail"
+            placeholder="john@example.com"
             required
           />
         </div>
@@ -119,6 +120,7 @@ const Login = () => {
             name="LoginPassword"
             value={formData.LoginPassword}
             onChange={handleChange}
+            placeholder="password"
             required
           />
         </div>

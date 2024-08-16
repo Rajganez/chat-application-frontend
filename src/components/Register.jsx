@@ -55,6 +55,10 @@ const Register = () => {
       setError("Password and Confirm Password do not match");
       return;
     }
+    if (formData.signUpPassword.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
     if (
       !formData.signUpEmail.includes("@") ||
       !formData.signUpEmail.endsWith(".com")
@@ -86,6 +90,7 @@ const Register = () => {
               value={formData.signUpEmail}
               onChange={handleChange}
               id="signUpEmail"
+              placeholder="john@example.com"
               required
             />
           </div>
@@ -100,6 +105,7 @@ const Register = () => {
               name="signUpPassword"
               value={formData.signUpPassword}
               onChange={handleChange}
+              placeholder="Must have at least 6 characters"
               required
             />
           </div>
@@ -114,6 +120,7 @@ const Register = () => {
               name="confirmSignUpPassword"
               value={formData.confirmSignUpPassword}
               onChange={handleChange}
+              placeholder="Must have at least 6 characters"
               required
             />
           </div>
