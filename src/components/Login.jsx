@@ -120,7 +120,7 @@ const Login = () => {
             name="LoginPassword"
             value={formData.LoginPassword}
             onChange={handleChange}
-            placeholder="password"
+            placeholder="Your password"
             required
           />
         </div>
