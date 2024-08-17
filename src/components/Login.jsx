@@ -71,15 +71,12 @@ const Login = () => {
   // Handling Login Submit Button with Handled Form Error
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (formData.LoginPassword !== formData.confirmLoginPassword) {
-    //   setError("Password and Confirm Password do not match.");
-    //   return;
-    // }
-    if (
-      !formData.loginEmail.includes("@") ||
-      !formData.loginEmail.endsWith(".com")
-    ) {
-      setError("Enter Valid Email.");
+    const validEmailDomains = [".com", ".in", ".org", ".dev"];
+    const emailDomainValid = validEmailDomains.some((domain) =>
+      formData.signUpEmail.endsWith(domain)
+    );
+    if (!formData.signUpEmail.includes("@") || !emailDomainValid) {
+      setError("Enter a valid email");
       return;
     }
     if (formData.loginEmail === "" || formData.LoginPassword === "") {
@@ -125,10 +122,10 @@ const Login = () => {
           />
         </div>
         {/* <div className="form-group mt-3"> */}
-          {/* <label htmlFor="confirmLoginPassword">
+        {/* <label htmlFor="confirmLoginPassword">
             Confirm Password <span className="text-danger">*</span>
           </label> */}
-          {/* <input
+        {/* <input
             type="password"
             className="form-control"
             id="confirmLoginPassword"
