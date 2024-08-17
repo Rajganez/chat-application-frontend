@@ -59,11 +59,12 @@ const Register = () => {
       setError("Password must be at least 6 characters long");
       return;
     }
-    if (
-      !formData.signUpEmail.includes("@") ||
-      !formData.signUpEmail.endsWith(".com")
-    ) {
-      setError("Enter Valid Email");
+    const validEmailDomains = [".com", ".in", ".org", ".dev"];
+    const emailDomainValid = validEmailDomains.some((domain) =>
+      formData.signUpEmail.endsWith(domain)
+    );
+    if (!formData.signUpEmail.includes("@") || !emailDomainValid) {
+      setError("Enter a valid email");
       return;
     }
     if (formData.signUpEmail === "" || formData.signUpPassword === "") {
