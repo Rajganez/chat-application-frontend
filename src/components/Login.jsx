@@ -8,25 +8,24 @@ import { setUserImage, setVerified } from "../redux/reducerSlice.js";
 
 // Login Component Used in the Welcome page
 const Login = () => {
-  //To Reset the Form to intialstate
-  const intialForm = {
+  // To Reset the Form to initial state
+  const initialForm = {
     loginEmail: "",
     LoginPassword: "",
-    // confirmLoginPassword: "",
   };
 
-  //State to send the payload
-  const [formData, setFormData] = useState(intialForm);
+  // State to send the payload
+  const [formData, setFormData] = useState(initialForm);
 
-  //Error State to show the error message in form submission
+  // Error State to show the error message in form submission
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  //Used Redux Slice and Redux-persist
+  // Used Redux Slice and Redux-persist
   const dispatch = useDispatch();
 
-  //Axios API-Call
+  // Axios API-Call
   const loginFunc = async () => {
     try {
       const response = await clientAPI.post(LOGIN_ROUTE, formData);
@@ -58,7 +57,8 @@ const Login = () => {
       }
     }
   };
-  //Form Handling
+
+  // Form Handling
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -71,20 +71,24 @@ const Login = () => {
   // Handling Login Submit Button with Handled Form Error
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Check if formData.loginEmail is defined and is a string before using string methods
+    const email = formData.loginEmail || "";
     const validEmailDomains = [".com", ".in", ".org", ".dev"];
     const emailDomainValid = validEmailDomains.some((domain) =>
-      formData.loginEmail.endsWith(domain)
+      email.endsWith(domain)
     );
-    if (!formData.loginEmail.includes("@") || !emailDomainValid) {
+
+    if (!email.includes("@") || !emailDomainValid) {
       setError("Enter a valid email");
       return;
     }
-    if (formData.loginEmail === "" || formData.LoginPassword === "") {
+    if (email === "" || formData.LoginPassword === "") {
       setError("All Fields must not be empty.");
       return;
     } else {
       loginFunc();
-      setFormData(intialForm);
+      setFormData(initialForm);
     }
   };
 
@@ -121,20 +125,6 @@ const Login = () => {
             required
           />
         </div>
-        {/* <div className="form-group mt-3"> */}
-        {/* <label htmlFor="confirmLoginPassword">
-            Confirm Password <span className="text-danger">*</span>
-          </label> */}
-        {/* <input
-            type="password"
-            className="form-control"
-            id="confirmLoginPassword"
-            name="confirmLoginPassword"
-            value={formData.confirmLoginPassword}
-            onChange={handleChange}
-            required
-          /> */}
-        {/* </div> */}
         <NavLink to="/forgotpassword" className="forgot-password my-5">
           Forgotten Password?
         </NavLink>
