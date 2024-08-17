@@ -73,9 +73,9 @@ const Login = () => {
     e.preventDefault();
     const validEmailDomains = [".com", ".in", ".org", ".dev"];
     const emailDomainValid = validEmailDomains.some((domain) =>
-      formData.signUpEmail.endsWith(domain)
+      formData.loginEmail.endsWith(domain)
     );
-    if (!formData.signUpEmail.includes("@") || !emailDomainValid) {
+    if (!formData.loginEmail.includes("@") || !emailDomainValid) {
       setError("Enter a valid email");
       return;
     }
